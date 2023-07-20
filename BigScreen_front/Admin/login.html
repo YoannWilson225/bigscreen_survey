@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulaire de login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-top: 20vh;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Login</div>
+                <div class="card-body">
+                    <div id="alertMessage" class="alert alert-success d-none" role="alert"></div> <!-- Balise pour l'alerte -->
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Mot de passe</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vérifier si l'utilisateur est déjà connecté
+        if (isUserLoggedIn()) {
+            redirectToDashboard();
+        }
+        
+        // Soumission du formulaire de login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var form = e.target;
+            var email = form.email.value;
+            var password = form.password.value;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://127.0.0.1:8000/api/admin/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    console.log(response);
+                    // Affiche l'alerte de succès
+                    var alertMessage = document.getElementById('alertMessage');
+                    alertMessage.textContent = response.message;
+                    alertMessage.classList.remove('d-none');
+                    // Redirige l'utilisateur vers le dashboard après un court délai
+                    setTimeout(function() {
+                        redirectToDashboard();
+                    }, 2000);
+                } else {
+                    console.error(xhr.statusText);
+                    alert('Erreur de connexion. Veuillez réessayer.');
+                }
+            };
+            
+            xhr.onerror = function() {
+                console.error('Une erreur est survenue lors de la requête');
+                alert('Une erreur est survenue lors de la connexion. Veuillez réessayer.');
+            };
+            
+            xhr.send(JSON.stringify({ email: email, password: password }));
+        });
+    });
+    
+    function isUserLoggedIn() {
+        // Vérifier si l'utilisateur est déjà connecté
+        // Ici, vous pouvez utiliser une méthode ou une variable pour vérifier l'état de connexion
+        // Par exemple, si vous utilisez le package Laravel Sanctum, vous pouvez vérifier si un jeton d'authentification est présent dans le cookie ou dans le LocalStorage
+        // Vous devrez adapter cette fonction en fonction de votre configuration d'authentification
+        // Retourne true si l'utilisateur est déjà connecté, sinon retourne false
+        return false;
+    }
+    
+    function redirectToDashboard() {
+        // Redirige l'utilisateur vers la page de dashboard
+        // Remplacez '/dashboard' par l'URL de votre page de dashboard
+        window.location.href = 'dashboard.html';
+    }
+    </script>
+    
+
+</body>
+</html>

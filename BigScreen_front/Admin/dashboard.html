@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Css/style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Admin/Dashboard</title>
+</head>
+
+<body>
+
+    <div class="contain">
+        <!-- Sidebar Section -->
+        <aside>
+            <div class="toggle">
+                <div class="logo">
+                    <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 56"><defs><style>.cls-1{fill: #000;}</style></defs><title>bigscreen</title><rect class="cls-1" x="48" y="8" width="8" height="40"/><path class="cls-1" d="M8,8V0H0V48H40V8H8ZM32,40H8V16H32Z"/><path class="cls-1" d="M72,8H64V40H96v8H72v8h32V8H72ZM96,32H72V16H96Z"/><polygon class="cls-1" points="119 8 112 8 112 32 113 32 120 32 144 32 144 40 112 40 112 48 144 48 152 48 152 40 152 32 152 24 144 24 120 24 120 16 152 16 152 8 120 8 119 8"/><polygon class="cls-1" points="160 8 160 16 160 48 163 48 168 48 200 48 200 40 168 40 168 16 200 16 200 8 168 8 160 8"/><polygon class="cls-1" points="212 8 208 8 208 48 216 48 216 16 248 16 248 8 216 8 212 8"/><path class="cls-1" d="M264,8h-8V48h40V40H264V32h32V8H264Zm25,16H264V16h25Z"/><path class="cls-1" d="M312,8h-8V48h40V40H312V32h32V8H312Zm24,16H312V16h24Z"/><polygon class="cls-1" points="384 8 360 8 352 8 352 16 352 48 360 48 360 16 384 16 384 48 392 48 392 16 392 8 384 8"/></svg>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a class="nav-link active" href="#" data-target="accueil-section">
+                    <span class="material-icons-sharp">
+                        dashboard
+                    </span>
+                    <h3>Accueil</h3>
+                </a>
+                <a class="nav-link" href="#" data-target="questionnaire-section">
+                    <span class="material-icons-sharp">
+                        inventory
+                    </span>
+                    <h3>Questionnaire</h3>
+                </a>
+                <a class="nav-link" href="#" data-target="reponses-section">
+                    <span class="material-icons-sharp">
+                        report_gmailerrorred
+                    </span>
+                    <h3>Réponses</h3>
+                </a>
+                <a href="#">
+                    <span class="material-icons-sharp">
+                        logout
+                    </span>
+                    <h3>Déconnexion</h3>
+                </a>
+            </div>
+        </aside>
+        <!-- End of Sidebar Section -->
+
+        <!-- Main Content -->
+        <main role="main">
+             <!-- Accueil -->
+    <div id="accueil-section" class="dashboard-section">
+        <!-- Contenu de la section du tableau de bord -->
+        <h1>Diagrammes</h1>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark">
+                    <h5 class="card-header text-light">Question 6</h5>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="chart1"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark">
+                    <h5 class="card-header text-light">Question 7</h5>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="chart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark">
+                    <h5 class="card-header text-light">Question 10</h5>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="chart3"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark">
+                    <h5 class="card-header text-light">Questions 11 à 15</h5>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="chart4"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- End of Accueil -->
+
+            <!-- Questionnaire -->
+            <div id="questionnaire-section" class="dashboard-section" style="display: none;">
+                <!-- Contenu de la section du questionnaire -->
+                <h1>Liste des questions</h1>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Question</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="questions">
+                        <!-- Les questions seront ajoutées ici -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- End of Questionnaire -->
+
+            <!-- Réponses -->
+            <div id="reponses-section" class="dashboard-section" style="display: none;">
+                <!-- Contient toutes les réponses -->
+                <h1>Réponses</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Question</th>
+                            <th>Réponses</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reponses">
+                        <!-- Les réponses seront ajoutées ici -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- End of Réponses -->
+
+
+        </main>
+        <!-- End of Main Content -->
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="nav">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">
+                        menu
+                    </span>
+                </button>
+            </div>
+            <!-- End of Nav -->
+
+            <div class="user-profile">
+                <div class="logo">
+                    <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 56"><defs><style>.cls-1{fill: #fff;}</style></defs><title>bigscreen</title><rect class="cls-1" x="48" y="8" width="8" height="40"/><path class="cls-1" d="M8,8V0H0V48H40V8H8ZM32,40H8V16H32Z"/><path class="cls-1" d="M72,8H64V40H96v8H72v8h32V8H72ZM96,32H72V16H96Z"/><polygon class="cls-1" points="119 8 112 8 112 32 113 32 120 32 144 32 144 40 112 40 112 48 144 48 152 48 152 40 152 32 152 24 144 24 120 24 120 16 152 16 152 8 120 8 119 8"/><polygon class="cls-1" points="160 8 160 16 160 48 163 48 168 48 200 48 200 40 168 40 168 16 200 16 200 8 168 8 160 8"/><polygon class="cls-1" points="212 8 208 8 208 48 216 48 216 16 248 16 248 8 216 8 212 8"/><path class="cls-1" d="M264,8h-8V48h40V40H264V32h32V8H264Zm25,16H264V16h25Z"/><path class="cls-1" d="M312,8h-8V48h40V40H312V32h32V8H312Zm24,16H312V16h24Z"/><polygon class="cls-1" points="384 8 360 8 352 8 352 16 352 48 360 48 360 16 384 16 384 48 392 48 392 16 392 8 384 8"/></svg><br>
+                    <p>The world's smallest VR headset</p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="../Js/dashboard.js"></script>
+</body>
+
+</html>
