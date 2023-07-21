@@ -9,7 +9,6 @@
     <style>
         body {
             background-color: #111;
-            color: white;
         }
 
         svg {
@@ -39,7 +38,7 @@
       </nav>
 
     <div class="container mt-5">
-        <h2>Formulaire de Sondage</h2><br>
+        <h2 class="text-white">Formulaire de Sondage</h2><br>
         <div class="alert alert-secondary" role="alert">
             Merci de répondre à toutes les questions et de valider le formulaire en bas de page
           </div>
@@ -49,29 +48,30 @@
         </form>
     </div>
 
-    <!-- La modal pour afficher le message de remerciement et l'URL unique -->
-    <div class="modal fade" id="thankYouModal" tabindex="-1" role="dialog" aria-labelledby="thankYouModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="thankYouModalLabel">Merci pour votre participation !</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Toute l'équipe de Bigscreen vous remercie pour votre engagement. Grâce à votre investissement,
-                    nous vous préparons une application toujours plus facile à utiliser, seul ou en famille. Vous
-                    pouvez consulter vos réponses ultérieurement en utilisant le lien unique ci-dessous :
-                    <a href="#" id="resultLink" target="_blank">Consulter mes réponses</a>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
-                </div>
+ <!-- La modal pour afficher le message de remerciement et l'URL unique -->
+<div class="modal fade" id="thankYouModal" tabindex="-1" role="dialog" aria-labelledby="thankYouModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-black">
+                <h5 class="modal-title" id="thankYouModalLabel">Merci pour votre participation !</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-black">
+                Toute l'équipe de Bigscreen vous remercie pour votre engagement. Grâce à votre investissement,
+                nous vous préparons une application toujours plus facile à utiliser, seul ou en famille. Vous
+                pouvez consulter vos réponses ultérieurement en utilisant le lien unique ci-dessous :
+                <a href="#" id="resultLink" target="_blank">Consulter mes réponses</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                <button type="button" id="resultLinkBtn" class="btn btn-primary">Consulter mes réponses</button>
             </div>
         </div>
     </div>
+</div>
 
     <script>
         // Déclarer la variable questions dans le scope global
@@ -122,10 +122,10 @@
                     card.classList.add('col-md-12', 'mb-4', 'd-flex', 'flex-column'); // Ajoutez des classes pour définir la mise en page
                     card.innerHTML = `
                         <div class="card bg-dark">
-                            <div class="card-header">
+                            <div class="card-header text-white">
                                 Question ${questionIndex}/20
                             </div>
-                            <div class="card-body">
+                            <div class="card-body text-white">
                                 <p>${question.body}</p>
                                 ${renderQuestionInput(question, questionIndex)}
                             </div>

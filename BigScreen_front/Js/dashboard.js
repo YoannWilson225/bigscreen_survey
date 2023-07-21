@@ -320,8 +320,9 @@ function showSection(sectionId) {
 function updateContent(target) {
   if (target === 'accueil-section') {
     // Mettre à jour les graphiques
-    fetchData();
     fetchQualityData();
+    fetchData();
+
   } else if (target === 'questionnaire-section') {
     // Récupérer et afficher les questions
     fetchQuestions();
