@@ -7,58 +7,70 @@
     <title>Formulaire de Sondage</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
-      /* Styles spécifiques à la navbar */
-      .navbar {
-          background-color: #333;
-      }
+        body {
+            background-color: #111;
+            color: white;
+        }
 
-      .navbar-brand {
-          color: #fff;
-      }
+        svg {
+            width: 15rem;
+            padding-top: 1.5rem;
+        }
 
-      .navbar-nav .nav-link {
-          color: #fff;
-      }
-  </style>
+        input.form-control {
+        border: 2.5px dashed #111;
+        height: 60px;
+    }
+
+    select.form-control {
+        border: 2.5px dashed #111;
+        height: 60px;
+    }
+
+    </style>
 </head>
 
 <body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container">
+            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 56"><defs><style>.cls-1{fill: #fff;}</style></defs><title>bigscreen</title><rect class="cls-1" x="48" y="8" width="8" height="40"/><path class="cls-1" d="M8,8V0H0V48H40V8H8ZM32,40H8V16H32Z"/><path class="cls-1" d="M72,8H64V40H96v8H72v8h32V8H72ZM96,32H72V16H96Z"/><polygon class="cls-1" points="119 8 112 8 112 32 113 32 120 32 144 32 144 40 112 40 112 48 144 48 152 48 152 40 152 32 152 24 144 24 120 24 120 16 152 16 152 8 120 8 119 8"/><polygon class="cls-1" points="160 8 160 16 160 48 163 48 168 48 200 48 200 40 168 40 168 16 200 16 200 8 168 8 160 8"/><polygon class="cls-1" points="212 8 208 8 208 48 216 48 216 16 248 16 248 8 216 8 212 8"/><path class="cls-1" d="M264,8h-8V48h40V40H264V32h32V8H264Zm25,16H264V16h25Z"/><path class="cls-1" d="M312,8h-8V48h40V40H312V32h32V8H312Zm24,16H312V16h24Z"/><polygon class="cls-1" points="384 8 360 8 352 8 352 16 352 48 360 48 360 16 384 16 384 48 392 48 392 16 392 8 384 8"/></svg>
 
-
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <svg >
-            <defs>
-                <style>.cls-1{fill:#fff;}</style>
-            </defs>
-            <title>bigscreen</title>
-            <rect class="cls-1" x="48" y="8" width="8" height="40"/>
-            <path class="cls-1" d="M8,8V0H0V48H40V8H8ZM32,40H8V16H32Z"/>
-            <path class="cls-1" d="M72,8H64V40H96v8H72v8h32V8H72ZM96,32H72V16H96Z"/>
-            <polygon class="cls-1" points="119 8 112 8 112 32 113 32 120 32 144 32 144 40 112 40 112 48 144 48 152 48 152 40 152 32 152 24 144 24 120 24 120 16 152 16 152 8 120 8 119 8"/>
-            <polygon class="cls-1" points="160 8 160 16 160 48 163 48 168 48 200 48 200 40 168 40 168 16 200 16 200 8 168 8 160 8"/>
-            <polygon class="cls-1" points="212 8 208 8 208 48 216 48 216 16 248 16 248 8 216 8 212 8"/>
-            <path class="cls-1" d="M264,8h-8V48h40V40H264V32h32V8H264Zm25,16H264V16h25Z"/>
-            <path class="cls-1" d="M312,8h-8V48h40V40H312V32h32V8H312Zm24,16H312V16h24Z"/>
-            <polygon class="cls-1" points="384 8 360 8 352 8 352 16 352 48 360 48 360 16 384 16 384 48 392 48 392 16 392 8 384 8"/>
-        </svg>
-    </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</nav>
+        </div>
+      </nav>
 
     <div class="container mt-5">
-      <div class="alert alert-primary" role="alert">
-       Merci de répondre à toutes les questions et de valider le formulaire <br>en bas de page
-      </div>
+        <h2>Formulaire de Sondage</h2><br>
+        <div class="alert alert-secondary" role="alert">
+            Merci de répondre à toutes les questions et de valider le formulaire en bas de page
+          </div>
         <form id="surveyForm">
-            <div id="questionsContainer"></div>
+            <div id="questionsContainer" class="row"></div>
             <button type="submit" class="btn btn-primary">Soumettre</button>
         </form>
+    </div>
+
+    <!-- La modal pour afficher le message de remerciement et l'URL unique -->
+    <div class="modal fade" id="thankYouModal" tabindex="-1" role="dialog" aria-labelledby="thankYouModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="thankYouModalLabel">Merci pour votre participation !</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Toute l'équipe de Bigscreen vous remercie pour votre engagement. Grâce à votre investissement,
+                    nous vous préparons une application toujours plus facile à utiliser, seul ou en famille. Vous
+                    pouvez consulter vos réponses ultérieurement en utilisant le lien unique ci-dessous :
+                    <a href="#" id="resultLink" target="_blank">Consulter mes réponses</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -73,7 +85,7 @@
         xhr.send();
 
         // Définir la fonction de rappel pour la réponse
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status !== 200) {
                 console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
                 return;
@@ -104,34 +116,22 @@
                 questions.forEach((question, index) => {
                     const questionId = question.id;
                     const questionIndex = index + 1; // Ajoutez 1 au compteur d'index
-                    let questionHTML = `
-                        <div class="form-group">
-                          <label for="question_${questionIndex}">
-                    <span style="font-weight: bold; font-size: 16px;">Question ${questionIndex}/20</span><br>
-                    <span>${question.body}</span>
-                </label>`;
 
-                    if (question.type === 'A') {
-                        questionHTML += `
-                            <select class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" required>
-                                <option value="">Sélectionnez une option</option>`;
-
-                        question.options.forEach((option) => {
-                            questionHTML += `<option value="${option}">${option}</option>`;
-                        });
-
-                        questionHTML += `</select>`;
-
-                    } else if (question.type === 'B') {
-                        questionHTML += `
-                            <input type="text" class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" maxlength="255" required>`;
-                    } else if (question.type === 'C') {
-                        questionHTML += `
-                            <input type="number" class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" min="1" max="5" required>`;
-                    }
-
-                    questionHTML += `</div>`;
-                    questionsContainer.innerHTML += questionHTML;
+                    // Créez une card Bootstrap pour chaque question
+                    const card = document.createElement('div');
+                    card.classList.add('col-md-12', 'mb-4', 'd-flex', 'flex-column'); // Ajoutez des classes pour définir la mise en page
+                    card.innerHTML = `
+                        <div class="card bg-dark">
+                            <div class="card-header">
+                                Question ${questionIndex}/20
+                            </div>
+                            <div class="card-body">
+                                <p>${question.body}</p>
+                                ${renderQuestionInput(question, questionIndex)}
+                            </div>
+                        </div>
+                    `;
+                    questionsContainer.appendChild(card);
                 });
             }
         };
@@ -140,7 +140,7 @@
         const surveyForm = document.getElementById('surveyForm');
 
         // Ajouter un écouteur d'événement sur la soumission du formulaire
-        surveyForm.addEventListener('submit', function(event) {
+        surveyForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Empêcher le comportement par défaut du formulaire
 
             // Récupérer les réponses du formulaire
@@ -165,11 +165,14 @@
             xhr.open('POST', 'http://localhost:8000/api/answers', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
 
-            xhr.onload = function() {
+            xhr.onload = function () {
                 if (xhr.status === 200) {
-                    // Réponses enregistrées avec succès
-                    alert('Réponses enregistrées avec succès');
-                      location.reload(); // Rediriger vers la page de confirmation
+                    const response = JSON.parse(xhr.responseText);
+                    const visitorId = response.visitor_id;
+                    // Réponses enregistrées avec succès, afficher la modal de remerciement avec l'URL unique
+                    const resultLink = generateUniqueUrl(visitorId);
+                    document.getElementById('resultLink').href = resultLink;
+                    $('#thankYouModal').modal('show');
                 } else {
                     // Erreur lors de l'enregistrement des réponses
                     console.error('Erreur lors de l\'enregistrement des réponses');
@@ -179,7 +182,45 @@
             xhr.send(JSON.stringify({ answers }));
         });
 
+        // Fonction pour générer le code HTML pour l'input en fonction du type de question
+        function renderQuestionInput(question, questionIndex) {
+            if (question.type === 'A') {
+                let optionsHTML = '';
+                question.options.forEach((option) => {
+                    optionsHTML += `<option value="${option}">${option}</option>`;
+                });
+                return `
+                    <select class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" required>
+                        <option value="">Sélectionnez une option</option>
+                        ${optionsHTML}
+                    </select>
+                `;
+            } else if (question.type === 'B') {
+                return `
+                    <input type="text" class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" maxlength="255" required>
+                `;
+            } else if (question.type === 'C') {
+                return `
+                    <input type="number" class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" min="1" max="5" required>
+                `;
+            } else {
+                return ''; // Si le type de question est inconnu, retourner une chaîne vide
+            }
+        }
+
+        // Fonction pour générer une URL unique
+        function generateUniqueUrl(visitorId) {
+            // Utilisez le timestamp actuel comme base pour l'URL unique
+            const timestamp = Date.now();
+            // Concaténez le timestamp et l'identifiant unique du visiteur pour former l'URL unique
+            const uniqueUrl = `http://localhost/bigscreen_survey/BigScreen_front/reponse?timestamp=${timestamp}&visitor_id=${visitorId}`;
+            return uniqueUrl;
+        }
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
 </body>
 

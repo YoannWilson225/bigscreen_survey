@@ -50,7 +50,7 @@ function initCharts() {
 // Fonction pour récupérer les données des questions 6 à 7 depuis l'API
 function fetchData() {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://127.0.0.1:8000/api/stats', true);
+  xhr.open('POST', `http://127.0.0.1:8000/api/stats`, true);
   xhr.onload = function() {
     if (xhr.status === 200) {
       var data = JSON.parse(xhr.responseText);
@@ -68,7 +68,7 @@ function fetchData() {
 // Fonction pour récupérer les données des questions 11 à 15 depuis l'API
 function fetchQualityData() {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://127.0.0.1:8000/api/qualitystats', true);
+    xhr.open('POST', `http://127.0.0.1:8000/api/qualitystats`, true);
     xhr.onload = function() {
         if (xhr.status === 200) {
             var data = JSON.parse(xhr.responseText);
@@ -156,7 +156,7 @@ let questionsData = [];
 // Fonction pour récupérer les questions depuis l'API
 function fetchQuestions() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://127.0.0.1:8000/api/questions', true);
+    xhr.open('GET', `http://127.0.0.1:8000/api/questions`, true);
     xhr.onload = function() {
         if (xhr.status !== 200) {
             console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
@@ -190,7 +190,7 @@ function fetchQuestions() {
 // Fonction pour récupérer les réponses depuis l'API
 function fetchResponses() {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://127.0.0.1:8000/api/admin/answers/get', true);
+    xhr.open('POST', `http://127.0.0.1:8000/api/admin/answers/get`, true);
     xhr.onload = function() {
         if (xhr.status !== 200) {
             console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);

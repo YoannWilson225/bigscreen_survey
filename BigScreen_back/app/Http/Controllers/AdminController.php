@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Answer;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\PersonalAccessToken;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -70,13 +72,14 @@ class AdminController extends Controller
         }
 
         // On vérifie le mot de passe de la requête
-        // En cas d'erreur de correspondance, on renvoie l'erreur
-        if (!Hash::check($request->password, $admin->password)) {
-            return response()->json([
-                                        'error' => 'Mot de passe incorrect ',
-                                        'status' => 'failed'
-                                    ], 202);
-        }
+// En cas d'erreur de correspondance, on renvoie l'erreur
+if (!Hash::check($request->password, $admin->password)) {
+    return response()->json([
+        'error' => 'Identifiants invalides',
+        'status' => 'failed'
+    ], 202);
+}
+
 
         // Si tout se passe bien, on créé le token
         $userToken = $admin->createToken("token",  ['*'], now()->addHours(15))->plainTextToken;
@@ -85,11 +88,12 @@ class AdminController extends Controller
         return response()->json([
                                     'error' => '',
                                     'token' => $userToken,
-                                    'userId' => $admin->id,
+                                    'adminId' => $admin->id,
                                     'message' => "Connexion reussie",
                                     'status' => 'done'
                                 ], 200);
     }
+
 
     /**
      * Déconnecte un utilisateur

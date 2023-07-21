@@ -61,19 +61,29 @@ class SurveyController extends Controller
             ]);
         }
 
-        // Crée un cookie contenant l'identifiant unique
-        $cookie = cookie('visitor_id', $visitorId, 2880); // Le cookie expire après 2 jours
-
-        return response()->json('Answers stored successfully')->cookie($cookie);
+        return response()->json(['visitor_id' => $visitorId], 200);
     }
 
 
-    public function showAnswer(Request $request)
-    {
-        $visitorId = $request->cookie('visitor_id'); // Récupère l'identifiant unique depuis le cookie
-        $responses = Answer::where('visitor_id', $visitorId)->get();
-        return response()->json($responses);
+public function getSurveyAnswersByVisitorId($visitorId)
+{
+    // Récupérer toutes les réponses du sondage associées au visitor_id spécifié
+    $responses = Answer::where('visitor_id', $visitorId)->get();
+
+    if ($responses->count() > 0) {
+        return response()->json([
+            'status' => 200,
+            'responses' => $responses
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Aucune réponse trouvée pour le visitor_id spécifié'
+        ], 404);
     }
+}
+
+
 
     public function getSurveyAnswers()
     {

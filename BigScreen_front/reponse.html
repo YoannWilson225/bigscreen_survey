@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réponses du Sondage</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h1>Réponses du Sondage</h1>
+        <div id="responsesContainer"></div>
+    </div>
+
+    <script>
+        // Récupérer l'URL actuelle
+        const currentUrl = window.location.href;
+
+        // Utiliser l'objet URL pour extraire les paramètres d'URL
+        const url = new URL(currentUrl);
+
+        // Récupérer le visitor_id à partir des paramètres d'URL
+        const visitorId = url.searchParams.get("visitor_id");
+
+        // Créer une instance de XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+
+        // Envoyer la requête GET vers l'API pour récupérer les réponses du visiteur en fonction du visitor_id
+        xhr.open('GET', `http://localhost:8000/api/showAnswers/${visitorId}`, true);
+        xhr.send();
+
+        // Définir la fonction de rappel pour la réponse
+        xhr.onload = function () {
+            if (xhr.status !== 200) {
+                console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
+                return;
+            }
+
+            let response;
+            try {
+                response = JSON.parse(xhr.responseText);
+            } catch (error) {
+                console.error('Erreur lors du parsing de la réponse JSON :', error);
+                return;
+            }
+
+            const responsesContainer = document.getElementById('responsesContainer');
+
+            if (response.responses.length === 0) {
+                const noResponsesMessage = document.createElement('p');
+                noResponsesMessage.textContent = "Aucune réponse trouvée pour ce sondé.";
+                responsesContainer.appendChild(noResponsesMessage);
+            } else {
+                response.responses.forEach((answer) => {
+                    const questionId = answer.question_id;
+                    const responseValue = answer.response;
+                    let responseHTML = `
+                        <div class="form-group">
+                            <label for="question_${questionId}">
+                                Réponse à la question ${questionId}:
+                            </label>
+                            <p>${responseValue}</p>
+                        </div>`;
+                    responsesContainer.innerHTML += responseHTML;
+                });
+            }
+        };
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
