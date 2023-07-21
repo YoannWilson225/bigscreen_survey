@@ -20,23 +20,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('stats', [SurveyController::class, 'getSurveyStatistics']);
-Route::post('qualitystats', [SurveyController::class, 'getQualityStatistics']);
-
 
 
 Route::get('questions', [SurveyController::class, 'getQuestions']);
 Route::post('answers', [SurveyController::class, 'storeAnswers']);
-Route::get('/answers/show', [SurveyController::class, 'showAnswer']);
+Route::get('answers/show', [SurveyController::class, 'showAnswer']);
 
 Route::post('admin/register', [AdminController::class, 'registerAdmin']);
-Route::post('admin/login', [AdminController::class, 'login'])->name('login');
-Route::post('admin/answers/get', [SurveyController::class, 'getSurveyAnswers']);
+Route::post('admin/login', [AdminController::class, 'login']);
 
+Route::middleware('trusttoken')->group(function() {
+    Route::get('admin/logged/{token?}',[AdminController::class, "logged"]);
+    Route::post('admin/logout/{id}/{token?}', [AdminController::class, 'logout']);
 
-Route::middleware('auth:sanctum')->group(function () {
-
-    Route::post('admin/logout', [AdminController::class, 'logout']);
-    // Autres routes d'administration
+    Route::post('admin/stats/{token?}', [SurveyController::class, 'getSurveyStatistics']);
+    Route::post('admin/qualitystats/{token?}', [SurveyController::class, 'getQualityStatistics']);
+    Route::post('admin/answers/get/{token?}', [SurveyController::class, 'getSurveyAnswers']);
 });
-

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\PersonalAccessToken;
 use App\Http\Controllers\Controller;
-use App\Models\User; // Ajouter cette ligne d'importation
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -33,36 +33,124 @@ class AdminController extends Controller
     }
 
 
+        /**
+     * Connecte un nouvel utilisateur
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            $user = auth()->user();
-
-            if ($user->isAdmin()) {
-
-                // L'utilisateur est un administrateur
-                // Générer un token d'authentification pour l'utilisateur
-                $token = $user->createToken('auth-token')->plainTextToken;
-
-                // Retourner le token d'authentification avec la réponse JSON
-                return response()->json(['message' => 'Connexion réussie en tant qu\'administrateur', 'token' => $token]);
-            }
+        // On essaie de vérifier les données fournies par la requête
+        // En cas d'erreur on la récupère et on retourne cette erreur
+        try {
+            $request->validate([
+                "email" => "required|email:rfc",
+                "password" => "required|string",
+            ]);
+        }
+        catch (\Exception $e) {
+            $error = $e->getMessage();
+            return response()->json([
+                                        'error' => $error,
+                                        'status' => 'failed'
+                                    ], 202);
         }
 
-        // Identifiants invalides ou l'utilisateur n'est pas un administrateur
-        // Gérer l'échec de la connexion de l'administrateur
-        return response()->json(['message' => 'Identifiants invalides ou vous n\'êtes pas un administrateur'], 401);
+        // Tentative de récupération de l'utilsateur
+        // A partir de l'email fourni par la requête
+        $admin = User::where(['email' => $request->email])->first();
+
+        // Si une instance nulle est retournée
+        if (!$admin) {
+            return response()->json([
+                                        'error' => 'Adresse email inconnue',
+                                        'status' => 'failed'
+                                    ], 202);
+        }
+
+        // On vérifie le mot de passe de la requête
+        // En cas d'erreur de correspondance, on renvoie l'erreur
+        if (!Hash::check($request->password, $admin->password)) {
+            return response()->json([
+                                        'error' => 'Mot de passe incorrect ',
+                                        'status' => 'failed'
+                                    ], 202);
+        }
+
+        // Si tout se passe bien, on créé le token
+        $userToken = $admin->createToken("token",  ['*'], now()->addHours(15))->plainTextToken;
+
+        // La reponse est retounée
+        return response()->json([
+                                    'error' => '',
+                                    'token' => $userToken,
+                                    'userId' => $admin->id,
+                                    'message' => "Connexion reussie",
+                                    'status' => 'done'
+                                ], 200);
     }
 
-
-
-    public function logout()
+    /**
+     * Déconnecte un utilisateur
+     *
+     * @param  int  $id
+     * @param  string  $token
+     * @return \Illuminate\Http\Response
+     */
+    public function logout($id = null, $token = null)
     {
-        Auth::logout();
+        // On essaie de retrouver l'utilisateur à partir de son id
+        // En cas d'erreur on la récupère et on retourne cette erreur
+        try {
+            $admin = User::findOrFail($id);
+        } catch (\Exception $e) {
+            return response()->json([
+                                        'error' => $e->getMessage(),
+                                        'status' => 'failed'
+                                    ], 202);
+        }
 
-        // Gérer la déconnexion de l'administrateur
-        return response()->json(['message' => 'Déconnexion réussie']);
+        // Si tout se passe bien
+        // On supprime tous les tokens
+        $admin->tokens()->delete();
+
+        // La reponse est retounée
+        return response()->json([
+                                    'error' => '',
+                                    'message' => "Deconnexion reussie",
+                                    'status' => 'done'
+                                ], 200);
+    }
+
+    /**
+     * Vérifie si l'utilisateur est connecté
+     *
+     * @param  string  $token
+     * @return \Illuminate\Http\Response
+     */
+    public function logged($token = null)
+    {
+        // On essaie de retrouver controler le token
+        // En cas d'erreur on la récupère et on retourne cette erreur
+        try {
+            $isTokenChecked = PersonalAccessToken::checkToken($token);
+        }
+        catch (\Exception $e) {
+            return response()->json([
+                                        'error' => $e->getMessage(),
+                                        'status' => 'failed'
+                                    ], 202);
+        }
+
+        // La reponse est retounée si le token est valide
+        // Dans le cas contraire le middleware prendre le relais
+        if ($isTokenChecked) {
+            return response()->json([
+                                        'error' => '',
+                                        'message' => "Utilisateur connecte",
+                                        'status' => 'done'
+                                    ], 200);
+        }
     }
 }

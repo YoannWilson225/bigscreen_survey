@@ -22,7 +22,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
-        // Force Sanctum a utilisé notre nouveau PersonalAccessToken
-        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 }

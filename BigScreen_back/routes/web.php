@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\PersonalAccessToken;
 use Illuminate\Support\Facades\Route;
+use Illuminate\http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/test', function (Request $request) {
+    dd(PersonalAccessToken::checkToken('9|qFtGkfFLwCnBpDC8QvjEVyAxwfYo2bCSurQwEwuP'));
+    return 'OK';
 });
