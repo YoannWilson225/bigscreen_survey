@@ -114,36 +114,34 @@
             <!-- End of Accueil -->
 
             <!-- Questionnaire -->
-            <div id="questionnaire-section" class="dashboard-section" style="display: none;">
-                <!-- Contenu de la section du questionnaire -->
-                <h1>Liste des questions</h1>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Question</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody id="questions">
-                        <!-- Les questions seront ajoutées ici -->
-                    </tbody>
-                </table>
-            </div>
-            <!-- End of Questionnaire -->
+<div id="questionnaire-section" class="dashboard-section" style="display: none;">
+    <!-- Contenu de la section du questionnaire -->
+    <h1>Liste des questions</h1>
+    <div class="card bg-dark">
+        <div class="card-body">
+            <table class="table text-white">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody id="questions">
+                    <!-- Les questions seront ajoutées ici -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- End of Questionnaire -->
+
 
             <!-- Réponses -->
             <div id="reponses-section" class="dashboard-section" style="display: none;">
                 <!-- Contient toutes les réponses -->
                 <h1>Réponses</h1>
                 <table class="table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Question</th>
-                            <th>Réponses</th>
-                        </tr>
-                    </thead>
                     <tbody id="reponses">
                         <!-- Les réponses seront ajoutées ici -->
                     </tbody>

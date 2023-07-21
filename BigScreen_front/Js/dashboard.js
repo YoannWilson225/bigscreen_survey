@@ -150,32 +150,37 @@ function generateChartData(data, questionId) {
     return null;
   }
 
+ // Déclarer une variable pour stocker les questions
+let questionsData = [];
 
 // Fonction pour récupérer les questions depuis l'API
 function fetchQuestions() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://127.0.0.1:8000/api/questions', true);
     xhr.onload = function() {
-            if (xhr.status !== 200) {
-                console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
-                return;
-            }
+        if (xhr.status !== 200) {
+            console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
+            return;
+        }
 
-            const response = JSON.parse(xhr.responseText);
-            const questions = response.questions;
-            const questionsContainer = document.getElementById('questions');
+        const response = JSON.parse(xhr.responseText);
+        questionsData = response.questions; // Stocker les questions dans la variable
+        const questionsContainer = document.getElementById('questions');
 
-            // Parcourir les questions et les ajouter au tableau
-            questions.forEach((question, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${question.body}</td>
-                    <td>${question.type}</td>
-                `;
-                questionsContainer.appendChild(row);
-            });
-        };
+        // Parcourir les questions et les ajouter au tableau
+        questionsData.forEach((question, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${question.body}</td>
+                <td>${question.type}</td>
+            `;
+            questionsContainer.appendChild(row);
+        });
+
+        // Maintenant que les questions sont récupérées, appeler la fonction pour récupérer les réponses
+        fetchResponses();
+    };
     xhr.onerror = function () {
         console.error('Une erreur s\'est produite lors de la requête XHR pour récupérer les questions.');
     };
@@ -187,31 +192,116 @@ function fetchResponses() {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://127.0.0.1:8000/api/admin/answers/get', true);
     xhr.onload = function() {
-            if (xhr.status !== 200) {
-                console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
-                return;
-            }
+        if (xhr.status !== 200) {
+            console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
+            return;
+        }
 
-            const resp = JSON.parse(xhr.responseText);
-            const responses = resp.responses;
-            const reponsesContainer = document.getElementById('reponses');
+        const resp = JSON.parse(xhr.responseText);
+        const responses = resp.responses;
+        const groupedResponses = groupResponsesByVisitorId(responses);
 
-            // Parcourir les questions et les ajouter au tableau
-            responses.forEach((response, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${response.body}</td>
-                    <td>${response.response}</td>
-                `;
-                reponsesContainer.appendChild(row);
-            });
-        };
+        // Appeler la fonction pour afficher les réponses dans différents tableaux
+        displayResponses(groupedResponses);
+    };
     xhr.onerror = function () {
         console.error('Une erreur s\'est produite lors de la requête XHR pour récupérer les questions.');
     };
     xhr.send();
 }
+
+
+// Fonction pour récupérer la question par son ID
+function getQuestionById(questionId) {
+    return questionsData.find(question => question.id === questionId);
+}
+
+// Appeler la fonction pour récupérer les questions
+fetchQuestions();
+
+function groupResponsesByVisitorId(responses) {
+    const groupedResponses = {};
+
+    responses.forEach((response) => {
+        const visitorId = response.visitor_id;
+
+        if (!groupedResponses[visitorId]) {
+            groupedResponses[visitorId] = [];
+        }
+
+        groupedResponses[visitorId].push(response);
+    });
+
+    return groupedResponses;
+}
+
+function displayResponses(groupedResponses) {
+    const reponsesContainer = document.getElementById('reponses');
+
+    // Vider le contenu de la section des réponses
+    reponsesContainer.innerHTML = '';
+
+    // Parcourir les groupes de réponses par visitor_id
+    for (const visitorId in groupedResponses) {
+        if (groupedResponses.hasOwnProperty(visitorId)) {
+            const responses = groupedResponses[visitorId];
+            const tableCard = createResponseTable(visitorId, responses);
+            reponsesContainer.appendChild(tableCard);
+
+            // Ajouter un espace entre les cartes
+            reponsesContainer.appendChild(document.createElement('br'));
+        }
+    }
+}
+
+// Fonction pour créer un tableau avec les réponses pour un visitor_id donné
+function createResponseTable(visitorId, responses) {
+    const card = document.createElement('div');
+    card.className = 'card mb-4 bg-dark text-white';
+
+    // Créer la carte-header pour afficher le visitor_id
+    const cardHeader = document.createElement('div');
+    cardHeader.className = 'card-header';
+    cardHeader.textContent = `Visitor ID: ${visitorId}`;
+    card.appendChild(cardHeader);
+
+    // Créer le contenu du tableau (les en-têtes et les réponses)
+    const table = document.createElement('table');
+    table.className = 'table text-white';
+
+    let tableContent = `<thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Question</th>
+                            <th>Réponses</th>
+                        </tr>
+                        </thead>
+                        <tbody>`;
+
+    responses.forEach((response, index) => {
+        // Récupérer la question correspondante par son ID
+        const question = getQuestionById(response.question_id);
+
+        // Ajouter les réponses à chaque question dans le tableau
+        tableContent += `<tr>
+                            <td>${index + 1}</td>
+                            <td>${question.body}</td>
+                            <td>${response.response}</td>
+                        </tr>`;
+    });
+
+    tableContent += '</tbody>';
+    table.innerHTML = tableContent;
+
+    // Ajouter le tableau à la carte Bootstrap
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+    cardBody.appendChild(table);
+    card.appendChild(cardBody);
+
+    return card;
+}
+
 
 
 // Fonction pour afficher la section correspondante lorsque vous sélectionnez un onglet

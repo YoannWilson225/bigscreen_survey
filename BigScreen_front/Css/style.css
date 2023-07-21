@@ -68,7 +68,7 @@ img{
 }
 
 h1{
-    color: #4D1EF7;
+    color: white;
     font-weight: 400;
     font-size: 1.8rem;
 }
@@ -186,6 +186,7 @@ main{
 
 .card {
     border-radius: 0.5rem;
+    color: white;
 }
 
 
