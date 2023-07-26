@@ -82,12 +82,12 @@ if (!Hash::check($request->password, $admin->password)) {
 
 
         // Si tout se passe bien, on créé le token
-        $userToken = $admin->createToken("token",  ['*'], now()->addHours(15))->plainTextToken;
+        $adminToken = $admin->createToken("token",  ['*'], now()->addHours(15))->plainTextToken;
 
         // La reponse est retounée
         return response()->json([
                                     'error' => '',
-                                    'token' => $userToken,
+                                    'token' => $adminToken,
                                     'adminId' => $admin->id,
                                     'message' => "Connexion reussie",
                                     'status' => 'done'

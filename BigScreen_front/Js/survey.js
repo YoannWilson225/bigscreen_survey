@@ -67,15 +67,16 @@ const surveyForm = document.getElementById('surveyForm');
 surveyForm.addEventListener('submit', function (event) {
     event.preventDefault(); // Empêcher le comportement par défaut du formulaire
 
-    const emailInput = document.getElementById('question_1').value;
+    const emailInput = document.getElementById('question_1');
 
     // Récupérer l'élément du message d'e-mail invalide par son ID
     const invalidEmailMessage = document.getElementById('invalidEmailMessage');
 
       // Vérifier l'e-mail avant la soumission du formulaire
-      if (!isValidEmail(emailInput)) {
+      if (!isValidEmail(emailInput.value)) {
 
         window.scrollTo(0, 0);
+        emailInput.style.borderColor = 'red';
         // Faire descendre la div
         setTimeout(function () {
             invalidEmailMessage.style.top = '10px'; // Descendre du top de la page

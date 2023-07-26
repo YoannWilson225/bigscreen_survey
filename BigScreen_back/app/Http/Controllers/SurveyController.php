@@ -49,7 +49,7 @@ class SurveyController extends Controller
     public function storeAnswers(Request $request)
     {
         $answers = $request->input('answers');
-        
+
         $visitorId = uniqid(); // Génère une clé de référence alphanumérique unique
 
         // Vérifier la première question avant d'enregistrer les réponses
@@ -80,6 +80,7 @@ class SurveyController extends Controller
                 'question_id' => $questionId,
                 'response' => $response, // Utilise le champ "value" pour la réponse
                 'visitor_id' => $visitorId, // Associe la clé de référence au champ visitor_id
+                // Le champ "created_at" sera automatiquement rempli avec la date et l'heure actuelles
             ]);
         }
 
