@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
-use App\Models\Question;
 use App\Models\Option;
+use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SurveyController extends Controller
 {
@@ -48,7 +49,28 @@ class SurveyController extends Controller
     public function storeAnswers(Request $request)
     {
         $answers = $request->input('answers');
+        
         $visitorId = uniqid(); // Génère une clé de référence alphanumérique unique
+
+        // Vérifier la première question avant d'enregistrer les réponses
+        if (!isset($answers[0]) || $answers[0]['question_id'] !== 1) {
+            // Première question manquante ou invalide, renvoyer un message d'erreur
+            return response()->json(['error' => 'La première question est manquante ou invalide.'], 400);
+        }
+
+        $firstQuestion = $answers[0];
+
+        // Vérifier si la première question est une question de type "B" (e-mail)
+        if ($firstQuestion['question_id'] === 1 && isset($firstQuestion['value']) && !empty($firstQuestion['value'])) {
+            $validator = Validator::make($firstQuestion, [
+                'value' => 'email', // Validation de l'e-mail
+            ]);
+
+            if ($validator->fails()) {
+                // Première question invalide, renvoyer les erreurs de validation
+                return response()->json(['error' => 'L\'e-mail n\'est pas valide.'], 400);
+            }
+        }
 
         foreach ($answers as $answerData) {
             $questionId = $answerData['question_id'];
@@ -63,6 +85,7 @@ class SurveyController extends Controller
 
         return response()->json(['visitor_id' => $visitorId], 200);
     }
+
 
 
 public function getSurveyAnswersByVisitorId($visitorId)

@@ -38,5 +38,4 @@ Route::middleware('trusttoken')->group(function() {
     Route::get('admin/logged/{token?}',[AdminController::class, "logged"]);
     Route::post('admin/logout/{id}/{token?}', [AdminController::class, 'logout']);
 
-
 });

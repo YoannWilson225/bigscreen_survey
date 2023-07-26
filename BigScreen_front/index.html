@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
 
         svg {
             width: 15rem;
-            padding-top: 1.5rem;
+            padding-top: 3rem;
         }
 
         input.form-control {
@@ -26,16 +26,94 @@
         height: 60px;
     }
 
+    #copyLinkMessage {
+    position: absolute;
+    top: -50px;
+    text-align: center;
+    height: 30px;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #202528;
+    box-shadow: 0 2rem 3rem #0C0032;
+    font-weight: 500;
+    color: #fff;
+    border-radius: 20px;
+    z-index: 9999;
+    transition: opacity 1s, transform 1s; /* Augmenter la durée de l'animation à 1 seconde */
+    opacity: 0; /* Masquer le message par défaut */
+}
+
+#invalidEmailMessage  {
+    position: absolute;
+    top: -50px;
+    text-align: center;
+    height: 30px;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: red;
+    box-shadow: 0 2rem 3rem white;
+    font-weight: 500;
+    color: #fff;
+    border-radius: 20px;
+    z-index: 9999;
+    transition: opacity 1s, transform 1s; /* Augmenter la durée de l'animation à 1 seconde */
+    opacity: 0; /* Masquer le message par défaut */
+}
+
+
+@media screen and (max-width: 768px) {
+    #copyLinkMessage {
+    height: 30px;
+    width: 445px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 2rem 3rem #0C0032;
+    font-size: 13px;
+    transition: opacity 1s, transform 1s; /* Augmenter la durée de l'animation à 1 seconde */
+    opacity: 0; /* Masquer le message par défaut */
+}
+
+#invalidEmailMessage  {
+    height: 30px;
+    width: 445px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 2rem 3rem white;
+    font-size: 13px;
+    transition: opacity 1s, transform 1s; /* Augmenter la durée de l'animation à 1 seconde */
+    opacity: 0; /* Masquer le message par défaut */
+}
+
+
+#invalidEmailMessage  p {
+    padding-top: 5px;
+}
+
+#copyLinkMessage p {
+    padding-top: 5px;
+}
+
+}
+
     </style>
 </head>
 
 <body>
+    <!-- div pour afficher le message de copie du lien -->
+    <div id="copyLinkMessage">
+      <p>Lien bien copié ! Sauvegardez-le pour consulter vos réponses plus tard.</p>
+    </div>
+    <div id="invalidEmailMessage" class="invalid-email-message">
+        <p>Email invalide ! Veuillez saisir un bon email</p>
+      </div>
     <nav class="navbar bg-body-tertiary">
         <div class="container">
             <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 56"><defs><style>.cls-1{fill: #fff;}</style></defs><title>bigscreen</title><rect class="cls-1" x="48" y="8" width="8" height="40"/><path class="cls-1" d="M8,8V0H0V48H40V8H8ZM32,40H8V16H32Z"/><path class="cls-1" d="M72,8H64V40H96v8H72v8h32V8H72ZM96,32H72V16H96Z"/><polygon class="cls-1" points="119 8 112 8 112 32 113 32 120 32 144 32 144 40 112 40 112 48 144 48 152 48 152 40 152 32 152 24 144 24 120 24 120 16 152 16 152 8 120 8 119 8"/><polygon class="cls-1" points="160 8 160 16 160 48 163 48 168 48 200 48 200 40 168 40 168 16 200 16 200 8 168 8 160 8"/><polygon class="cls-1" points="212 8 208 8 208 48 216 48 216 16 248 16 248 8 216 8 212 8"/><path class="cls-1" d="M264,8h-8V48h40V40H264V32h32V8H264Zm25,16H264V16h25Z"/><path class="cls-1" d="M312,8h-8V48h40V40H312V32h32V8H312Zm24,16H312V16h24Z"/><polygon class="cls-1" points="384 8 360 8 352 8 352 16 352 48 360 48 360 16 384 16 384 48 392 48 392 16 392 8 384 8"/></svg>
 
         </div>
-      </nav>
+    </nav>
 
     <div class="container mt-5">
         <h2 class="text-white">Formulaire de Sondage</h2><br>
@@ -43,7 +121,9 @@
             Merci de répondre à toutes les questions et de valider le formulaire en bas de page
           </div>
         <form id="surveyForm">
-            <div id="questionsContainer" class="row"></div>
+            <div id="questionsContainer" class="row">
+                <!-- les questions seront affichées ici  -->
+            </div>
             <button type="submit" class="btn btn-primary">Soumettre</button>
         </form>
     </div>
@@ -66,158 +146,15 @@
                 <a href="#" id="resultLink" target="_blank">Consulter mes réponses</a>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
-                <button type="button" id="resultLinkBtn" class="btn btn-primary">Consulter mes réponses</button>
+                <!-- Ajouter un bouton "Annuler" avec un ID pour le cibler avec JavaScript -->
+                <input type="text" class="form-control" id="resultLinkInput" readonly>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="cancelButton">Fermer</button>
             </div>
         </div>
     </div>
 </div>
 
-    <script>
-        // Déclarer la variable questions dans le scope global
-        let questions;
-
-        // Créer une instance de XMLHttpRequest
-        const xhr = new XMLHttpRequest();
-
-        // Envoyer la requête GET vers l'API
-        xhr.open('GET', 'http://localhost:8000/api/questions', true);
-        xhr.send();
-
-        // Définir la fonction de rappel pour la réponse
-        xhr.onload = function () {
-            if (xhr.status !== 200) {
-                console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
-                return;
-            }
-
-            let response;
-            try {
-                response = JSON.parse(xhr.responseText);
-            } catch (error) {
-                console.error('Erreur lors du parsing de la réponse JSON :', error);
-                return;
-            }
-
-            questions = response.questions;
-
-            if (!Array.isArray(questions)) {
-                console.error("Les questions ne sont pas valides.");
-                return;
-            }
-
-            const questionsContainer = document.getElementById('questionsContainer');
-
-            if (questions.length === 0) {
-                const noQuestionsMessage = document.createElement('p');
-                noQuestionsMessage.textContent = "Aucune question n'est disponible.";
-                questionsContainer.appendChild(noQuestionsMessage);
-            } else {
-                questions.forEach((question, index) => {
-                    const questionId = question.id;
-                    const questionIndex = index + 1; // Ajoutez 1 au compteur d'index
-
-                    // Créez une card Bootstrap pour chaque question
-                    const card = document.createElement('div');
-                    card.classList.add('col-md-12', 'mb-4', 'd-flex', 'flex-column'); // Ajoutez des classes pour définir la mise en page
-                    card.innerHTML = `
-                        <div class="card bg-dark">
-                            <div class="card-header text-white">
-                                Question ${questionIndex}/20
-                            </div>
-                            <div class="card-body text-white">
-                                <p>${question.body}</p>
-                                ${renderQuestionInput(question, questionIndex)}
-                            </div>
-                        </div>
-                    `;
-                    questionsContainer.appendChild(card);
-                });
-            }
-        };
-
-        // Récupérer le formulaire
-        const surveyForm = document.getElementById('surveyForm');
-
-        // Ajouter un écouteur d'événement sur la soumission du formulaire
-        surveyForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Empêcher le comportement par défaut du formulaire
-
-            // Récupérer les réponses du formulaire
-            const answers = [];
-
-            for (let index = 0; index < questions.length; index++) {
-                const question = questions[index];
-                const questionId = question.id; // Utilisez l'ID de la question
-                const questionIndex = index + 1;
-                const input = document.getElementById(`question_${questionIndex}`);
-                const answer = {
-                    question_id: questionId,
-                    value: input.value
-                };
-                answers.push(answer);
-            }
-
-            // Créer une instance de XMLHttpRequest
-            const xhr = new XMLHttpRequest();
-
-            // Envoyer la requête POST vers l'API pour enregistrer les réponses
-            xhr.open('POST', 'http://localhost:8000/api/answers', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    const visitorId = response.visitor_id;
-                    // Réponses enregistrées avec succès, afficher la modal de remerciement avec l'URL unique
-                    const resultLink = generateUniqueUrl(visitorId);
-                    document.getElementById('resultLink').href = resultLink;
-                    $('#thankYouModal').modal('show');
-                } else {
-                    // Erreur lors de l'enregistrement des réponses
-                    console.error('Erreur lors de l\'enregistrement des réponses');
-                }
-            };
-
-            xhr.send(JSON.stringify({ answers }));
-        });
-
-        // Fonction pour générer le code HTML pour l'input en fonction du type de question
-        function renderQuestionInput(question, questionIndex) {
-            if (question.type === 'A') {
-                let optionsHTML = '';
-                question.options.forEach((option) => {
-                    optionsHTML += `<option value="${option}">${option}</option>`;
-                });
-                return `
-                    <select class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" required>
-                        <option value="">Sélectionnez une option</option>
-                        ${optionsHTML}
-                    </select>
-                `;
-            } else if (question.type === 'B') {
-                return `
-                    <input type="text" class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" maxlength="255" required>
-                `;
-            } else if (question.type === 'C') {
-                return `
-                    <input type="number" class="form-control" id="question_${questionIndex}" name="question_${questionIndex}" min="1" max="5" required>
-                `;
-            } else {
-                return ''; // Si le type de question est inconnu, retourner une chaîne vide
-            }
-        }
-
-        // Fonction pour générer une URL unique
-        function generateUniqueUrl(visitorId) {
-            // Utilisez le timestamp actuel comme base pour l'URL unique
-            const timestamp = Date.now();
-            // Concaténez le timestamp et l'identifiant unique du visiteur pour former l'URL unique
-            const uniqueUrl = `http://localhost/bigscreen_survey/BigScreen_front/reponse?timestamp=${timestamp}&visitor_id=${visitorId}`;
-            return uniqueUrl;
-        }
-    </script>
-
+    <script src="Js/survey.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
