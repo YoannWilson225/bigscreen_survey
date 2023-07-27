@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Envoi de la requête XHR vers votre fonction de logout
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', `http://127.0.0.1:8000/api/admin/logout/${adminId}/${adminToken}`, true);
+        xhr.open('POST', `http://127.0.0.1:8000/api/admin/logout/${adminId}/${token}`, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {

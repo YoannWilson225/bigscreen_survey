@@ -79,6 +79,7 @@ aside .toggle{
 
 
 aside .toggle .close{
+    color: white;
     padding-right: 1rem;
     display: none;
 }
@@ -87,7 +88,7 @@ aside .sidebar{
     display: flex;
     flex-direction: column;
     background-color: #202528;
-    box-shadow: 0 2rem 3rem var(#0C0032);
+    box-shadow: 0 2rem 3rem #0C0032;
     border-radius: 15px;
     height: 100vh;
     position: relative;
@@ -187,6 +188,10 @@ main{
     transition: all 0.3s ease;
 }
 
+.chart-container {
+    max-height: 250px;
+  }
+
 .right-section .user-profile .logo{
     padding-top: 5rem;
 }
@@ -237,16 +242,20 @@ main{
     .contain{
         width: 100%;
         grid-template-columns: 1fr;
-        padding: 0 var(--padding-1);
+        padding: 0 10px;
+    }
+
+    .card {
+        padding-bottom: 20px;
     }
 
     aside{
         position: fixed;
-        background-color: var(--color-white);
+        background-color: #202528;
         width: 15rem;
         z-index: 3;
-        box-shadow: 1rem 3rem 4rem var(--color-light);
-        height: 100vh;
+        box-shadow: 1rem 3rem 4rem #0C0032;
+        height: 150vh;
         left: -100%;
         display: none;
         animation: showMenu 0.4s ease forwards;
@@ -283,15 +292,7 @@ main{
     aside .toggle .close{
         display: inline-block;
         cursor: pointer;
-    }
-
-    main{
-        margin-top: 8rem;
-        padding: 0 1rem;
-    }
-
-    main .new-users .user-list .user{
-        flex-basis: 35%;
+        color: white;
     }
 
 
@@ -314,11 +315,6 @@ main{
         margin: 0;
     }
 
-    .right-section .nav .dark-mode{
-        width: 4.4rem;
-        position: absolute;
-        left: 66%;
-    }
 
     .right-section .profile .info{
         display: none;
@@ -328,7 +324,7 @@ main{
         display: inline-block;
         background-color: transparent;
         cursor: pointer;
-        color: var(--color-dark);
+        color: white;
         position: absolute;
         left: 1rem;
     }

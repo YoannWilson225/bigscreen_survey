@@ -14,6 +14,7 @@ closeBtn.addEventListener('click', () => {
 
 // Déclarer les variables pour les graphiques
 let chart1, chart2, chart3, chart4;
+
 // Fonction pour initialiser les graphiques
 function initCharts() {
     const chartOptions = {
@@ -38,17 +39,32 @@ function initCharts() {
         data: {},
         options: chartOptions
     });
+
     chart4 = new Chart(document.getElementById('chart4'), {
-        type: 'radar', // Type de graphique radar
-        data: {},
-        options: chartOptions
+        type: 'radar',
+        data: {
+            labels: ["Qualité de l'image", "Confort d'utilisation", "Connexion au réseau", "Qualité des graphismes 3D", "Qualité audio"],
+            datasets: [{
+                data: [0, 0, 0, 0, 0],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scale: {
+                ticks: {
+                    beginAtZero: true
+                }
+            }
+        }
     });
 }
 
 // Fonction pour récupérer les données des questions 6 à 7 depuis l'API
 function fetchData() {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', `http://127.0.0.1:8000/api/stats`, true);
+  xhr.open('POST', `http://127.0.0.1:8000/api/admin/stats/${token}`, true);
   xhr.onload = function() {
     if (xhr.status === 200) {
       var data = JSON.parse(xhr.responseText);
@@ -66,7 +82,7 @@ function fetchData() {
 // Fonction pour récupérer les données des questions 11 à 15 depuis l'API
 function fetchQualityData() {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', `http://127.0.0.1:8000/api/qualitystats`, true);
+    xhr.open('POST', `http://127.0.0.1:8000/api/admin/qualitystats/${token}`, true);
     xhr.onload = function() {
         if (xhr.status === 200) {
             var data = JSON.parse(xhr.responseText);
@@ -81,48 +97,40 @@ function fetchQualityData() {
     xhr.send();
 }
 
-
-// Appeler la fonction pour initialiser les graphiques
-initCharts();
-
-// Fonction pour mettre à jour les graphiques avecles données récupérées
-function updateChartData(data) {
-    chart1.data = generateChartData(data, 6);
-    chart2.data = generateChartData(data, 7);
-    chart3.data = generateChartData(data, 10);
-    chart4.data = generateChartData(data);
-
-    chart1.update();
-    chart2.update();
-    chart3.update();
-  }
-
-
-
-  // Fonction pour mettre à jour les données spécifiques aux questions 11 à 15 et le quatrième graphique de type radar
 function updateQualityChartData(data) {
     // Récupérer les données spécifiques aux questions 11 à 15
-    var questionData = data.find(function(item) {
+    var questionData = data.filter(function(item) {
         return item.question_id >= 11 && item.question_id <= 15;
     });
 
-    if (questionData && questionData.responses) {
-        var labels = Object.keys(questionData.responses);
-        var values = Object.values(questionData.responses);
+    if (questionData.length > 0) {
+        var values = questionData.map(function(item) {
+            return Object.values(item.responses)[0]; // Supposant que chaque question a une seule réponse
+        });
 
         // Mettre à jour le quatrième graphique de type radar
-        chart4.data = {
-            labels: labels,
-            datasets: [{
-                data: values,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        };
-
+        chart4.data.datasets[0].data = values;
         chart4.update();
     }
+}
+
+function updateChartData(data) {
+    // Réinitialiser les données des graphiques
+    chart1.data = {};
+    chart2.data = {};
+    chart3.data = {};
+
+    // Mise à jour des données du premier graphique
+    chart1.data = generateChartData(data, 6);
+    chart1.update();
+
+    // Mise à jour des données du deuxième graphique
+    chart2.data = generateChartData(data, 7);
+    chart2.update();
+
+    // Mise à jour des données du troisième graphique
+    chart3.data = generateChartData(data, 10);
+    chart3.update();
 }
 
 
@@ -147,6 +155,8 @@ function generateChartData(data, questionId) {
 
     return null;
   }
+
+
 
  // Déclarer une variable pour stocker les questions
 let questionsData = [];
@@ -188,7 +198,7 @@ function fetchQuestions() {
 // Fonction pour récupérer les réponses depuis l'API
 function fetchResponses() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `http://127.0.0.1:8000/api/admin/answers/get`, true);
+    xhr.open('GET', `http://127.0.0.1:8000/api/admin/answers/get/${token}`, true);
     xhr.onload = function() {
         if (xhr.status !== 200) {
             console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
@@ -330,23 +340,32 @@ function updateContent(target) {
 
 // Gestionnaire d'événements pour les liens de la barre de navigation
 document.addEventListener('DOMContentLoaded', function () {
-showSection('accueil-section');
-  updateContent('accueil-section');
-  var navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(function (link) {
-    link.addEventListener('click', function (event) {
-      event.preventDefault();
-      var target = this.getAttribute('data-target');
-      showSection(target);
-      updateContent(target);
+    // Appeler initCharts() une seule fois au chargement de la page
+    initCharts();
 
-      // Mettre à jour la classe active des liens de navigation
-      navLinks.forEach(function (navLink) {
-        navLink.classList.remove('active');
-      });
-      this.classList.add('active');
+    showSection('accueil-section');
+    updateContent('accueil-section');
+    var navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            var target = this.getAttribute('data-target');
+            showSection(target);
+            updateContent(target);
+
+            // Mettre à jour la classe active des liens de navigation
+            navLinks.forEach(function (navLink) {
+                navLink.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
     });
-  });
 });
+
+
+
+
+
+
 
 

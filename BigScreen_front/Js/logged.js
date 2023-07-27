@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded', function() {
     // Si le token est présent, envoyez une requête au backend pour vérifier s'il est valide
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `http://127.0.0.1:8000/api/admin/logged/${adminToken}`, true);
+    xhr.open('GET', `http://127.0.0.1:8000/api/admin/logged/${token}`, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -26,3 +26,5 @@ window.addEventListener('DOMContentLoaded', function() {
     };
     xhr.send();
     });
+
+

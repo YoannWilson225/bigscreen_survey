@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\PersonalAccessToken;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
 
 class AdminController extends Controller
 {
@@ -82,17 +83,18 @@ if (!Hash::check($request->password, $admin->password)) {
 
 
         // Si tout se passe bien, on créé le token
-        $adminToken = $admin->createToken("token",  ['*'], now()->addHours(15))->plainTextToken;
+        $token = $admin->createToken("token",  ['*'], now()->addHours(15))->plainTextToken;
 
         // La reponse est retounée
         return response()->json([
                                     'error' => '',
-                                    'token' => $adminToken,
+                                    'token' => $token,
                                     'adminId' => $admin->id,
                                     'message' => "Connexion reussie",
                                     'status' => 'done'
                                 ], 200);
     }
+
 
 
     /**

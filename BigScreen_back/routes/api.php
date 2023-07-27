@@ -28,13 +28,15 @@ Route::get('/showAnswers/{visitorId}', [SurveyController::class, 'getSurveyAnswe
 Route::post('admin/register', [AdminController::class, 'registerAdmin']);
 Route::post('admin/login', [AdminController::class, 'login']);
 
-Route::post('stats', [SurveyController::class, 'getSurveyStatistics']);
-    Route::post('qualitystats', [SurveyController::class, 'getQualityStatistics']);
-    Route::get('admin/answers/get', [SurveyController::class, 'getSurveyAnswers']);
 
 
 
 Route::middleware('trusttoken')->group(function() {
+
+    Route::post('admin/stats/{token?}', [SurveyController::class, 'getSurveyStatistics']);
+    Route::post('admin/qualitystats/{token?}', [SurveyController::class, 'getQualityStatistics']);
+    Route::get('admin/answers/get/{token?}', [SurveyController::class, 'getSurveyAnswers']);
     Route::get('admin/logged/{token?}',[AdminController::class, "logged"]);
     Route::post('admin/logout/{id}/{token?}', [AdminController::class, 'logout']);
+
 });
