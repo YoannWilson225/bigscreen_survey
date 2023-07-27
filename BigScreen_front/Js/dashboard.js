@@ -188,7 +188,7 @@ function fetchQuestions() {
 // Fonction pour récupérer les réponses depuis l'API
 function fetchResponses() {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', `http://127.0.0.1:8000/api/admin/answers/get`, true);
+    xhr.open('GET', `http://127.0.0.1:8000/api/admin/answers/get`, true);
     xhr.onload = function() {
         if (xhr.status !== 200) {
             console.error(`Erreur ${xhr.status} : ${xhr.statusText}`);
@@ -214,8 +214,6 @@ function getQuestionById(questionId) {
     return questionsData.find(question => question.id === questionId);
 }
 
-// Appeler la fonction pour récupérer les questions
-fetchQuestions();
 
 function groupResponsesByVisitorId(responses) {
     const groupedResponses = {};
@@ -350,7 +348,5 @@ showSection('accueil-section');
     });
   });
 });
-
-
 
 

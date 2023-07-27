@@ -30,12 +30,11 @@ Route::post('admin/login', [AdminController::class, 'login']);
 
 Route::post('stats', [SurveyController::class, 'getSurveyStatistics']);
     Route::post('qualitystats', [SurveyController::class, 'getQualityStatistics']);
-    Route::post('admin/answers/get', [SurveyController::class, 'getSurveyAnswers']);
+    Route::get('admin/answers/get', [SurveyController::class, 'getSurveyAnswers']);
 
 
 
 Route::middleware('trusttoken')->group(function() {
     Route::get('admin/logged/{token?}',[AdminController::class, "logged"]);
     Route::post('admin/logout/{id}/{token?}', [AdminController::class, 'logout']);
-
 });

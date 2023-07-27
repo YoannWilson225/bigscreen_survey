@@ -98,6 +98,8 @@ surveyForm.addEventListener('submit', function (event) {
 
           // Empêcher la soumission du formulaire si l'e-mail n'est pas valide
           return;
+      }else {
+        emailInput.style.borderColor = 'green';
       }
 
     // Récupérer les réponses du formulaire
@@ -175,6 +177,7 @@ $('#thankYouModal').on('hidden.bs.modal', function () {
 
     // Réinitialiser le formulaire en utilisant la méthode reset()
     document.getElementById('surveyForm').reset();
+    emailInput.style.borderColor = 'black';
 
     // Effectuer la copie automatique lorsque la modal se ferme
     copyToClipboard(resultLinkInput);
@@ -201,7 +204,7 @@ $('#thankYouModal').on('hidden.bs.modal', function () {
 // Fonction pour vérifier le format de l'e-mail
 function isValidEmail(email) {
     // Utilisez une expression régulière pour vérifier le format de l'e-mail
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
     return emailPattern.test(email);
 }
 

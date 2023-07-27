@@ -153,6 +153,7 @@ if (!Hash::check($request->password, $admin->password)) {
             return response()->json([
                                         'error' => '',
                                         'message' => "Utilisateur connecte",
+                                        'token' => $token,
                                         'status' => 'done'
                                     ], 200);
         }

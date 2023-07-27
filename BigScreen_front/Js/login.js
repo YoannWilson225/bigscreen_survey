@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (response.status === 'done') {
                         // Login réussi, affiche l'alerte de succès
                         showSuccessAlert(response.message);
-                        window.localStorage.setItem(tokenName, `${response.adminId}_${adminName}_${response.token}`);
+                        window.localStorage.setItem(tokenName, `${response.adminId}_${adminName}_${response.adminToken}`);
                     } else {
                         // Login échoué, afficher l'alerte d'erreur
                         const errorMessage = response.error || 'Une erreur s\'est produite lors de la connexion';
