@@ -63,7 +63,7 @@ class SurveyController extends Controller
         // Vérifier si la première question est une question de type "B" (e-mail)
         if ($firstQuestion['question_id'] === 1 && isset($firstQuestion['value']) && !empty($firstQuestion['value'])) {
             $validator = Validator::make($firstQuestion, [
-                'value' => 'email', // Validation de l'e-mail
+                'value' => 'required|email:rfc', // Validation de l'e-mail
             ]);
 
             if ($validator->fails()) {

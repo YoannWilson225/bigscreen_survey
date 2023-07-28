@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>API Documentation</title>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        svg {
+            width: 15rem;
+            padding-top: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container">
+            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 56"><defs><style>.cls-1{fill: #fff;}</style></defs><title>bigscreen</title><rect class="cls-1" x="48" y="8" width="8" height="40"/><path class="cls-1" d="M8,8V0H0V48H40V8H8ZM32,40H8V16H32Z"/><path class="cls-1" d="M72,8H64V40H96v8H72v8h32V8H72ZM96,32H72V16H96Z"/><polygon class="cls-1" points="119 8 112 8 112 32 113 32 120 32 144 32 144 40 112 40 112 48 144 48 152 48 152 40 152 32 152 24 144 24 120 24 120 16 152 16 152 8 120 8 119 8"/><polygon class="cls-1" points="160 8 160 16 160 48 163 48 168 48 200 48 200 40 168 40 168 16 200 16 200 8 168 8 160 8"/><polygon class="cls-1" points="212 8 208 8 208 48 216 48 216 16 248 16 248 8 216 8 212 8"/><path class="cls-1" d="M264,8h-8V48h40V40H264V32h32V8H264Zm25,16H264V16h25Z"/><path class="cls-1" d="M312,8h-8V48h40V40H312V32h32V8H312Zm24,16H312V16h24Z"/><polygon class="cls-1" points="384 8 360 8 352 8 352 16 352 48 360 48 360 16 384 16 384 48 392 48 392 16 392 8 384 8"/></svg>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <!-- Colonne pour la liste des endpoints -->
+            <div class="col-md-3">
+                <div class="list-group">
+                    <a href="#endpoint1" class="list-group-item list-group-item-action">Listes des questions</a>
+                    <a href="#endpoint2" class="list-group-item list-group-item-action">Stockage des réponses</a>
+                    <a href="#endpoint3" class="list-group-item list-group-item-action">Réponses du sondage par visitor_id</a>
+                    <a href="#endpoint4" class="list-group-item list-group-item-action">Statistiques du sondage</a>
+                    <a href="#endpoint5" class="list-group-item list-group-item-action">Statistiques de qualité</a>
+                    <a href="#endpoint6" class="list-group-item list-group-item-action">Toutes les réponses du sondage</a>
+                    <a href="#endpoint7" class="list-group-item list-group-item-action">Connexion admin</a>
+                    <a href="#endpoint8" class="list-group-item list-group-item-action">Déconnexion admin</a>
+                    <a href="#endpoint9" class="list-group-item list-group-item-action">Vérifier si l'admin est connecté</a>
+                    <!-- Ajoutez plus de liens ici pour d'autres endpoints -->
+                </div>
+            </div>
+            <!-- Colonne pour la documentation des endpoints -->
+            <div class="col-md-9">
+                <h1 class="my-4">Bigscreen API Documentation</h1>
+
+                <div id="endpoint1" class="card bg-dark my-4">
+                    <div class="card-header text-white font-weight-bold">
+                        <h2>Listes des questions: /api/questions</h2>
+                    </div>
+                    <div class="card-body text-white">
+                        <p>Description: Cette fonction se charge de récupérer toutes les questions.</p>
+                        <p>Méthode: GET</p>
+                        <p>Paramètres:
+                            <ul>
+                                <li>'questions' (array): Tableau retournant les questions.</li>
+                                <li>'message' (string): Message.</li>
+                            </ul>
+                        </p>
+                        <p>Response: JSON object avec les propriétés suivantes:
+                            <ul>
+                                <li>id (integer): ID de la question.</li>
+                                <li>body (string): Corps de la question.</li>
+                                <li>type (string): Type de la question.</li>
+                                <li>options (array): Tableau contenant les options de la question (uniquement pour les questions de type 'A').</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+
+                <div id="endpoint2" class="card bg-dark my-4">
+                    <div class="card-header text-white font-weight-bold">
+                        <h2>Stockage des réponses: /api/answers</h2>
+                    </div>
+                    <div class="card-body text-white">
+                        <p>Description: Fonction de stockage des réponses.</p>
+                        <p>Méthode: POST</p>
+                        <p>Paramètres:
+                            <ul>
+                                <li>'answers' (array): Tableau contenant les réponses aux questions du sondage.</li>
+                            </ul>
+                        </p>
+                        <p>Response: JSON object avec les propriétés suivantes:
+                            <ul>
+                                <li>'visitor_id' (string): Clé de référence unique associée aux réponses enregistrées.</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+
+                <div id="endpoint3" class="card bg-dark my-4">
+                    <div class="card-header text-white font-weight-bold">
+                        <h2>Réponses du sondage par visitor_id: /api/showAnswers/{visitorId}</h2>
+                    </div>
+                    <div class="card-body text-white">
+                        <p>Description: Récupère toutes les réponses du sondage associées au visitor_id spécifié.</p>
+                        <p>Méthode: GET</p>
+                        <p>Paramètres:
+                            <ul>
+                                <li>'visitorId' (string): Clé de référence unique du visitor.</li>
+                            </ul>
+                        </p>
+                        <p>Response: JSON object avec les propriétés suivantes:
+                            <ul>
+                                <li>'status' (integer): Statut de la réponse (200 pour succès, 404 pour échec).</li>
+                                <li>'responses' (array): Tableau contenant les réponses associées au visitor_id spécifié.</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+
+                <div id="endpoint4" class="card bg-dark my-4">
+                    <div class="card-header text-white font-weight-bold">
+                        <h2>Statistiques du sondage: /api/admin/stats/{token?}</h2>
+                    </div>
+                    <div class="card-body text-white">
+                        <p>Description: Récupère les statistiques du sondage pour les questions avec un question_id de 6 à 7 et 10.</p>
+                        <p>M
+                            <p>Méthode: POST</p>
+                            <p>Paramètres:
+                                <ul>
+                                    <li>'token' (string, optionnel): Jeton d'authentification de l'administrateur.</li>
+                                </ul>
+                            </p>
+                            <p>Response: JSON object contenant les données pour les graphiques :
+                                <ul>
+                                    <li>'question_id' (integer): ID de la question.</li>
+                                    <li>'responses' (array): Tableau contenant les réponses et leurs occurrences.</li>
+                                </ul>
+                            </p>
+                        </div>
+                </div>
+
+                    <div id="endpoint5" class="card bg-dark my-4">
+                        <div class="card-header text-white font-weight-bold">
+                            <h2>Statistiques de qualité: /api/admin/qualitystats/{token?}</h2>
+                        </div>
+                        <div class="card-body text-white">
+                            <p>Description: Récupère les statistiques de qualité pour les questions avec un question_id de 11 à 15.</p>
+                            <p>Méthode: POST</p>
+                            <p>Paramètres:
+                                <ul>
+                                    <li>'token' (string, optionnel): Jeton d'authentification de l'administrateur.</li>
+                                </ul>
+                            </p>
+                            <p>Response: JSON object contenant les données pour les graphiques :
+                                <ul>
+                                    <li>'question_id' (integer): ID de la question.</li>
+                                    <li>'responses' (array): Tableau contenant les réponses et leurs occurrences.</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="endpoint6" class="card bg-dark my-4">
+                        <div class="card-header text-white font-weight-bold">
+                            <h2>Toutes les réponses du sondage: /api/admin/answers/get/{token?}</h2>
+                        </div>
+                        <div class="card-body text-white">
+                            <p>Description: Récupère toutes les réponses du sondage.</p>
+                            <p>Méthode: GET</p>
+                            <p>Paramètres:
+                                <ul>
+                                    <li>'token' (string, optionnel): Jeton d'authentification de l'administrateur.</li>
+                                </ul>
+                            </p>
+                            <p>Response: JSON object avec les propriétés suivantes :
+                                <ul>
+                                    <li>'status' (integer): Statut de la réponse (200 pour succès, 404 pour échec).</li>
+                                    <li>'responses' (array): Tableau contenant toutes les réponses du sondage.</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="endpoint7" class="card bg-dark my-4">
+                        <div class="card-header text-white font-weight-bold">
+                            <h2>Connexion admin: /api/admin/login</h2>
+                        </div>
+                        <div class="card-body text-white">
+                            <p>Description: Connecte un nouvel utilisateur administrateur.</p>
+                            <p>Méthode: POST</p>
+                            <p>Paramètres:
+                                <ul>
+                                    <li>'email' (string): Adresse e-mail de l'administrateur.</li>
+                                    <li>'password' (string): Mot de passe de l'administrateur.</li>
+                                </ul>
+                            </p>
+                            <p>Response: JSON object avec les propriétés suivantes :
+                                <ul>
+                                    <li>'error' (string, optionnel): Message d'erreur en cas d'échec de la connexion.</li>
+                                    <li>'token' (string): Jeton d'authentification de l'administrateur en cas de succès.</li>
+                                    <li>'adminId' (integer): ID de l'administrateur en cas de succès.</li>
+                                    <li>'message' (string): Message de succès en cas de succès.</li>
+                                    <li>'status' (string): Statut de la réponse ('failed' en cas d'échec, 'done' en cas de succès).</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="endpoint8" class="card bg-dark my-4">
+                        <div class="card-header text-white font-weight-bold">
+                            <h2>Déconnexion admin: /api/admin/logout/{id}/{token?}</h2>
+                        </div>
+                        <div class="card-body text-white">
+                            <p>Description: Déconnecte un utilisateur administrateur.</p>
+                            <p>Méthode: GET</p>
+                            <p>Paramètres:
+                                <ul>
+                                    <li>'id' (integer): ID de l'administrateur.</li>
+                                    <li>'token' (string, optionnel): Jeton d'authentification de l
+                                        <li>'id' (integer): ID de l'administrateur.</li>
+                                        <li>'token' (string, optionnel): Jeton d'authentification de l'administrateur.</li>
+                                    </ul>
+                                </p>
+                                <p>Response: JSON object avec les propriétés suivantes :
+                                    <ul>
+                                        <li>'error' (string, optionnel): Message d'erreur en cas d'échec de la déconnexion.</li>
+                                        <li>'message' (string): Message de succès en cas de succès.</li>
+                                        <li>'status' (string): Statut de la réponse ('failed' en cas d'échec, 'done' en cas de succès).</li>
+                                    </ul>
+                                </p>
+                            </div>
+                    </div>
+
+                    <div id="endpoint9" class="card bg-dark my-4">
+                        <div class="card-header text-white font-weight-bold">
+                                <h2>Vérifier si l'admin est connecté: /api/admin/logged/{token?}</h2>
+                            </div>
+                            <div class="card-body text-white">
+                                <p>Description: Vérifie si l'administrateur est connecté.</p>
+                                <p>Méthode: GET</p>
+                                <p>Paramètres:
+                                    <ul>
+                                        <li>'token' (string, optionnel): Jeton d'authentification de l'administrateur.</li>
+                                    </ul>
+                                </p>
+                                <p>Response: JSON object avec les propriétés suivantes :
+                                    <ul>
+                                        <li>'error' (string, optionnel): Message d'erreur en cas d'échec de la vérification.</li>
+                                        <li>'message' (string): Message de succès en cas de succès.</li>
+                                        <li>'status' (string): Statut de la réponse ('failed' en cas d'échec, 'done' en cas de succès).</li>
+                                    </ul>
+                                </p>
+                            </div>
+                    </div>
+
+                    <!-- Ajoutez plus de documentation pour d'autres endpoints ici -->
+
+                    </div>
+                </div>
+            </div>
+
+        </body>
+
+        </html>

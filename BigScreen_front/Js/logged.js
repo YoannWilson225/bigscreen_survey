@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 else {
                     window.localStorage.removeItem(tokenName);
 
-                    if (!window.location.href.includes('login.html')) {
+                    if (!window.location.href.includes('dashboard.html')) {
                         window.location.href = 'login.html';
                     }
                 }

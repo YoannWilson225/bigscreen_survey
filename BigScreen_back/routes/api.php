@@ -29,8 +29,6 @@ Route::post('admin/register', [AdminController::class, 'registerAdmin']);
 Route::post('admin/login', [AdminController::class, 'login']);
 
 
-
-
 Route::middleware('trusttoken')->group(function() {
 
     Route::post('admin/stats/{token?}', [SurveyController::class, 'getSurveyStatistics']);

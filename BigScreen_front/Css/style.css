@@ -21,7 +21,6 @@ body{
     font-size: 0.88rem;
     user-select: none;
     overflow-x: hidden;
-    color: var(--color-dark);
     background-color: #111;
 }
 

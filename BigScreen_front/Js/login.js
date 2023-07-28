@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Login réussi, affiche l'alerte de succès
                         showSuccessAlert(response.message);
                         window.localStorage.setItem(tokenName, `${response.adminId}_${adminName}_${response.token}`);
-                        redirectToDashboard()
+                        
                     } else {
                         // Login échoué, afficher l'alerte d'erreur
                         const errorMessage = response.error || 'Une erreur s\'est produite lors de la connexion';
