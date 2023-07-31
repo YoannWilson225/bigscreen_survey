@@ -242,3 +242,4 @@ function generateUniqueUrl(visitorId) {
     const uniqueUrl = `http://localhost/bigscreen_survey/BigScreen_front/reponse?timestamp=${timestamp}&visitor_id=${visitorId}`;
     return uniqueUrl;
 }
+
